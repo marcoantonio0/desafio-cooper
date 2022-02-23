@@ -1,0 +1,38 @@
+.data-wrapper {
+  display: flex;
+  flex-direction: row;
+  mat-icon {
+    color: #838383;
+    font-family: 'Material Icons Outlined';
+  }
+  .data-info {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  .title {
+    color: #838383;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .description {
+    font-size: 18px;
+    color: #333;
+  }
+}
+
+.form-control {
+  line-height: 1.8
+}
+
+table th {
+  color: #333;
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
+.btn {
+  line-height: 3;
+  padding: 0 25px;
+}

@@ -1,0 +1,16 @@
+<div class="d-flex flex-row align-items-center justify-content-center h-100">
+  <div class="container">
+
+    <div class="d-flex flex-column align-items-center justify-content-center py-3" *ngIf="isLoading">
+      <mat-spinner diameter="28"></mat-spinner>
+      <span class="d-block mt-2">Aguarde um momento...</span>
+    </div>
+    <mat-card *ngIf="hasError && !isLoading">
+        <h2 class="heading-1">
+          Ops!
+        </h2>
+        <span>Houve um erro inesperado, tente novamente mais tarde.</span>
+    </mat-card>
+    <router-outlet *ngIf="!isLoading"></router-outlet>
+  </div>
+</div>

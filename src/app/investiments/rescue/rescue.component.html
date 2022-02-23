@@ -1,0 +1,97 @@
+<div>
+  <h1>Dados do investimento</h1>
+<mat-card>
+  <div class="row">
+    <div class="col-xl-4 col-12 mb-2 mb-xl-0">
+      <div class="data-wrapper">
+        <mat-icon class="mat-18">badge</mat-icon>
+        <div class="data-info">
+          <span class="title">Nome</span>
+          <span class="description">{{investiment.nome}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-12 mb-2 mb-xl-0">
+      <div class="data-wrapper">
+        <mat-icon class="mat-18">flag</mat-icon>
+        <div class="data-info">
+          <span class="title">Objetivo</span>
+          <span class="description">{{investiment.objetivo}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-12 mb-2 mb-xl-0">
+      <div class="data-wrapper">
+        <mat-icon class="mat-18">paid</mat-icon>
+        <div class="data-info">
+          <span class="title">Saldo total</span>
+          <span class="description">{{investiment.saldoTotal | currency:'BRL'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+</div>
+<div class="mt-3">
+  <h1>Resgate</h1>
+  <mat-card>
+    <table mat-table [dataSource]="acoes.controls" class="w-100">
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ação </th>
+        <td mat-cell *matCellDef="let element"> {{element.value.nome}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="saldo">
+        <th mat-header-cell *matHeaderCellDef> Saldo Acumulado </th>
+        <td mat-cell *matCellDef="let element"> {{element.value.saldo | currency:'BRL'}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="total" >
+        <th mat-header-cell *matHeaderCellDef> Valor a resgatar </th>
+        <td mat-cell *matCellDef="let element" style="max-width: 80px;">
+          <div class="form-group my-2">
+            <input type="tel" class="form-control" currencyMask  placeholder="Digite o total a resgatar" [formControl]="element.controls.saldoResgatar" [ngClass]="{'is-invalid': element.controls.saldoResgatar.invalid}">
+            <div class="invalid-feedback" *ngIf="element.controls.saldoResgatar.invalid">
+              {{ getError(element.controls.saldoResgatar) }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="['acoes','saldo','total']"></tr>
+      <tr mat-row   *matRowDef="let row; columns: ['acoes','saldo','total'];"></tr>
+    </table>
+  </mat-card>
+  <mat-card class="mt-3">
+     <h3><b>Valor total do resgate:</b> {{ total | currency:'BRL' }}</h3>
+  </mat-card>
+  <div class="d-flex flex-row align-items-center justify-content-end mt-3">
+    <button class="btn btn-secondary me-2" [routerLink]="['/']" [disabled]="isLoading">Cancelar</button>
+    <button class="btn btn-primary" (click)="confirmRescue()" [disabled]="isLoading || total <= 0" style="min-height: 50px;">
+      {{ !isLoading ? 'Confirmar resgate' : '' }}
+      <mat-spinner diameter="26" *ngIf="isLoading"></mat-spinner>
+    </button>
+  </div>
+</div>
+
+<ng-template #modal>
+  <div class="d-flex flex-column align-items-center justify-content-center h-100 text-center" *ngIf="modalType == 'SUCCESS'">
+    <h2>Resgate efetuado com sucesso!</h2>
+    <button class="btn btn-primary" mat-dialog-close (click)="resetValues()">
+      Novo resgate
+    </button>
+  </div>
+  <div class="d-flex flex-column align-items-center justify-content-center h-100 text-center" *ngIf="modalType == 'ERROR'">
+    <h2>Dados inválidos</h2>
+    <ul class="list-unstyled">
+      <li *ngFor="let error of errors" [innerHTML]="error"></li>
+    </ul>
+    <button class="btn btn-primary" mat-dialog-close>
+      Corrigir
+    </button>
+  </div>
+</ng-template>
